@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account Tasks</title>
+<title>Edward's Account Tasks</title>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,37 +15,30 @@
   }
   body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  /* HEADER */
   .header { background: var(--white); border-bottom: 3px solid var(--red); padding: 0 24px; position: sticky; top: 0; z-index: 50; box-shadow: 0 1px 6px rgba(0,0,0,0.06); }
   .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 12px; height: 60px; }
   .logo { display: flex; align-items: center; gap: 8px; }
   .logo-circle { width: 28px; height: 28px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .logo-text { font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+  .logo-text { font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
   .header-stats { display: flex; gap: 16px; font-size: 13px; }
   .stat-overdue { color: var(--red); font-weight: 600; }
   .stat-soon { color: #b07d00; font-weight: 600; }
-
-  /* SYNC */
   .sync-bar { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
   .sync-spinner { width: 12px; height: 12px; border: 2px solid #ddd; border-top-color: var(--teal); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
-  .sync-dot.red { background: var(--red); }
 
-  /* FILTERS */
   .filters { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 24px; }
   .filters-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 10px; height: 48px; }
   .search-input { border: 1px solid #ddd; border-radius: 6px; padding: 5px 10px; font-size: 13px; font-family: inherit; outline: none; width: 170px; transition: border-color 0.15s; }
   .search-input:focus { border-color: var(--teal); }
-  select.filter-sel { border: 1px solid #ddd; border-radius: 6px; padding: 5px 10px; font-size: 13px; font-family: inherit; background: var(--white); cursor: pointer; outline: none; transition: border-color 0.15s; }
-  select.filter-sel:focus { border-color: var(--teal); }
+  select.filter-sel { border: 1px solid #ddd; border-radius: 6px; padding: 5px 10px; font-size: 13px; font-family: inherit; background: var(--white); cursor: pointer; outline: none; }
   .btn-group { display: flex; border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
   .btn-group button { padding: 5px 12px; font-size: 13px; border: none; font-family: inherit; cursor: pointer; background: var(--white); color: #444; transition: background 0.15s, color 0.15s; }
   .btn-group button.active { background: var(--purple); color: var(--white); font-weight: 600; }
   .btn-group.view button.active { background: var(--teal); }
   .spacer { flex: 1; }
 
-  /* BUTTONS */
   .btn-primary { background: var(--red); color: var(--white); border: none; border-radius: 6px; padding: 8px 16px; font-weight: 600; font-size: 13px; cursor: pointer; font-family: inherit; transition: background 0.15s; white-space: nowrap; }
   .btn-primary:hover { background: var(--red-dark); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -56,7 +49,6 @@
   .btn-settings { background: var(--white); border: 1px solid #ddd; border-radius: 6px; padding: 7px 12px; font-size: 13px; cursor: pointer; font-family: inherit; color: #555; white-space: nowrap; }
   .btn-settings:hover { background: #f5f5f5; }
 
-  /* CONTENT */
   .content { max-width: 1200px; margin: 0 auto; padding: 20px 24px; }
   .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
   .board-col { background: var(--white); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
@@ -66,10 +58,12 @@
   .board-col-body { padding: 8px; }
 
   /* TASK CARD */
-  .task-card { border-radius: 8px; border: 1px solid #f0f0f0; padding: 10px 12px; margin-bottom: 6px; background: var(--white); transition: box-shadow 0.15s; }
+  .task-card { border-radius: 8px; border: 1px solid #f0f0f0; padding: 10px 12px; margin-bottom: 6px; background: var(--white); transition: box-shadow 0.15s, opacity 0.3s, transform 0.3s; }
   .task-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
   .task-card.overdue { border-color: #ffd0d6; background: #fff8f8; }
   .task-card.done { opacity: 0.6; background: #fafafa; }
+  .task-card.completing { animation: completeCard 0.4s ease forwards; }
+  @keyframes completeCard { 0% { transform: scale(1); } 40% { transform: scale(1.03); background: #f0fdf4; border-color: #86efac; } 100% { transform: scale(1); } }
   .task-card-inner { display: flex; align-items: flex-start; gap: 8px; }
   .task-card-body { flex: 1; min-width: 0; }
   .task-title { font-size: 13px; font-weight: 500; line-height: 1.4; }
@@ -80,18 +74,18 @@
   .task-actions button { background: none; border: none; cursor: pointer; padding: 3px; font-size: 14px; color: #ccc; line-height: 1; }
   .task-actions button:hover { color: var(--red); }
 
-  /* LIST VIEW */
   .list-wrap { background: var(--white); border-radius: 10px; border: 1px solid var(--border); overflow: hidden; }
   .task-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f5f5f5; transition: background 0.1s; }
   .task-row:last-child { border-bottom: none; }
   .task-row:hover { background: #fafafa; }
   .task-row.overdue { background: #fff8f8; }
   .task-row.done { opacity: 0.6; background: #fafafa; }
+  .task-row.completing { animation: completeRow 0.4s ease forwards; }
+  @keyframes completeRow { 0% { background: var(--white); } 40% { background: #f0fdf4; } 100% { background: #fafafa; } }
   .task-row-account { width: 160px; flex-shrink: 0; }
   .task-row-title { flex: 1; }
   .task-row-due { width: 110px; flex-shrink: 0; text-align: right; font-size: 12px; }
 
-  /* BADGES */
   .badge-priority { font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
   .badge-account { font-size: 12px; font-weight: 600; color: var(--purple); background: var(--purple-light); padding: 2px 8px; border-radius: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 155px; display: inline-block; vertical-align: middle; }
   .badge-date { font-size: 11px; }
@@ -102,13 +96,11 @@
   .p-medium { color: #b07d00; background: #fffbf0; }
   .p-low { color: #54b9b3; background: #f0fafb; }
 
-  /* EMPTY */
   .empty { text-align: center; padding: 60px 0; color: #bbb; }
   .empty-icon { font-size: 40px; margin-bottom: 12px; }
   .empty-title { font-size: 15px; font-weight: 500; color: #999; }
   .empty-sub { font-size: 13px; margin-top: 4px; }
 
-  /* MODAL */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
   .modal { background: var(--white); border-radius: 12px; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); animation: modalIn 0.15s ease; }
   .modal.wide { max-width: 540px; }
@@ -121,7 +113,6 @@
   .modal-body { padding: 20px 24px; }
   .modal-footer { padding: 12px 24px 20px; display: flex; gap: 10px; justify-content: flex-end; }
 
-  /* FORM */
   .form-group { margin-bottom: 14px; }
   .form-label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 5px; }
   .form-input { width: 100%; border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; font-size: 13px; font-family: inherit; outline: none; background: var(--white); transition: border-color 0.15s; }
@@ -130,7 +121,13 @@
   .form-row { display: flex; gap: 12px; }
   .form-row .form-group { flex: 1; }
 
-  /* ACCOUNTS LIST */
+  /* AUTOCOMPLETE */
+  .autocomplete-wrap { position: relative; }
+  .autocomplete-list { position: absolute; top: calc(100% + 2px); left: 0; right: 0; background: var(--white); border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); z-index: 300; max-height: 200px; overflow-y: auto; }
+  .autocomplete-item { padding: 9px 12px; font-size: 13px; cursor: pointer; transition: background 0.1s; }
+  .autocomplete-item:hover, .autocomplete-item.highlighted { background: var(--purple-light); color: var(--purple); font-weight: 500; }
+  .autocomplete-item mark { background: none; color: var(--red); font-weight: 700; }
+
   .accounts-list { max-height: 360px; overflow-y: auto; border: 1px solid #f0f0f0; border-radius: 8px; }
   .account-item { display: flex; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f5f5f5; gap: 10px; }
   .account-item:last-child { border-bottom: none; }
@@ -139,7 +136,6 @@
   .btn-remove { background: none; border: 1px solid #f0c0c0; border-radius: 5px; padding: 3px 10px; font-size: 12px; color: var(--red); cursor: pointer; font-family: inherit; font-weight: 600; }
   .btn-remove:hover { background: #fff0f2; }
 
-  /* SETUP */
   .setup-status { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; font-weight: 600; }
   .setup-status.connected { background: #f0faf5; color: #1a7a4a; border: 1px solid #b2e0c8; }
   .setup-status.disconnected { background: #fff8f8; color: var(--red); border: 1px solid #ffd0d6; }
@@ -158,7 +154,9 @@
   .config-note { font-size: 11px; color: #aaa; margin-top: 4px; }
   .config-actions { display: flex; gap: 10px; align-items: center; margin-top: 4px; }
 
-  /* TOAST */
+  /* CONFETTI CANVAS */
+  #confettiCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
+
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: var(--white); padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; z-index: 999; animation: toastIn 0.2s ease; pointer-events: none; white-space: nowrap; }
   @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 
@@ -167,6 +165,8 @@
 </style>
 </head>
 <body>
+
+<canvas id="confettiCanvas"></canvas>
 
 <div class="header">
   <div class="header-inner">
@@ -177,12 +177,12 @@
           <polyline points="2,4 2,8 6,8" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
       </div>
-      <span class="logo-text">Account Tasks</span>
+      <span class="logo-text">Edward's Account Tasks</span>
     </div>
     <div class="header-stats" id="headerStats"></div>
     <div class="spacer"></div>
     <div class="sync-bar" id="syncBar" style="display:none"><div class="sync-spinner"></div><span>Syncing...</span></div>
-    <div class="sync-bar" id="connectedBar" style="display:none"><div class="sync-dot" id="connDot"></div><span id="connText"></span></div>
+    <div class="sync-bar" id="connectedBar" style="display:none"><div class="sync-dot" id="connDot"></div><span id="connText">Synced</span></div>
     <button class="btn-settings" onclick="openSetup()">⚙ JSONBin</button>
     <button class="btn-outline-purple" onclick="openManageAccounts()">Manage Accounts</button>
     <button class="btn-primary" onclick="openNewTask()">+ New Task</button>
@@ -224,7 +224,11 @@
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Account</label>
-        <select class="form-input" id="fAccount"></select>
+        <div class="autocomplete-wrap">
+          <input class="form-input" id="fAccount" type="text" placeholder="Type to search accounts..." autocomplete="off"
+            oninput="onAccountInput()" onkeydown="onAccountKeydown(event)" onfocus="onAccountInput()">
+          <div class="autocomplete-list" id="accountDropdown" style="display:none"></div>
+        </div>
       </div>
       <div class="form-group">
         <label class="form-label">Task</label>
@@ -300,54 +304,39 @@
       <button class="modal-close" onclick="document.getElementById('setupModal').style.display='none'">×</button>
     </div>
     <div class="modal-body" style="max-height:75vh;overflow-y:auto">
-
       <div class="setup-status" id="setupStatusBar">
         <div class="setup-dot red" id="setupDot"></div>
         <span id="setupStatusText">Not connected — tasks stored locally only</span>
       </div>
-
-      <p style="font-size:13px;color:#555;margin-bottom:18px;line-height:1.6">
-        JSONBin is a free cloud service for storing JSON data. Your tasks sync across any device in seconds. Takes about 2 minutes to set up.
-      </p>
-
+      <p style="font-size:13px;color:#555;margin-bottom:18px;line-height:1.6">Connect to JSONBin to sync your tasks across any device. Takes about 2 minutes to set up.</p>
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
           <div class="step-title">Create a free JSONBin account</div>
-          <div class="step-desc">
-            Go to <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> and sign up for free. No credit card needed.
-          </div>
+          <div class="step-desc">Go to <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> and sign up free. No credit card needed.</div>
         </div>
       </div>
-
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
           <div class="step-title">Get your API key</div>
-          <div class="step-desc">
-            After signing in, click your profile icon (top right) → <strong>API Keys</strong>.<br>
-            Copy your <strong>Secret Key</strong> (starts with <code>$2a$...</code>).
-          </div>
+          <div class="step-desc">After signing in, click your profile icon (top right) → <strong>API Keys</strong>. Copy your <strong>Secret Key</strong> (starts with <code>$2a$...</code>).</div>
         </div>
       </div>
-
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
           <div class="step-title">Paste your API key below and click Connect</div>
-          <div class="step-desc">
-            The app will create a new bin automatically and start syncing. That's it.
-          </div>
+          <div class="step-desc">The app will create a bin automatically and start syncing. That's it.</div>
         </div>
       </div>
-
       <div class="config-fields">
         <div class="form-group" style="margin-bottom:0">
           <label class="form-label">JSONBin API Key (Secret Key)</label>
           <input class="form-input" id="cfgApiKey" placeholder="$2a$10$..." type="password">
           <div class="config-note">Stored only in your browser — never sent anywhere except JSONBin</div>
         </div>
-        <div class="form-group" style="margin-bottom:0" id="binIdGroup">
+        <div class="form-group" style="margin-bottom:0">
           <label class="form-label">Bin ID <span style="font-weight:400;color:#aaa">(auto-filled after first connect)</span></label>
           <input class="form-input" id="cfgBinId" placeholder="Leave blank to create a new bin automatically">
           <div class="config-note">To use an existing bin, paste its ID here. Otherwise leave blank.</div>
@@ -359,7 +348,6 @@
         </div>
         <div id="configMsg" style="font-size:12px;min-height:16px"></div>
       </div>
-
     </div>
   </div>
 </div>
@@ -367,7 +355,7 @@
 <div id="toastEl" class="toast" style="display:none"></div>
 
 <script>
-// ─── DEFAULTS ────────────────────────────────────────────────────────────────
+// ─── DEFAULTS ─────────────────────────────────────────────────────────────────
 const DEFAULT_ACCOUNTS = [
   "Campion Homes","Guildmore Ltd","GC Project Management","CD Engineering",
   "Kellen Homes","Watson Homes","Reach Active","Northstone","Ground Construction",
@@ -377,22 +365,16 @@ const DEFAULT_ACCOUNTS = [
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let state = {
-  tasks: [],
-  accounts: [],
-  statusFilter: 'active',
-  viewFilter: 'board',
-  editId: null,
-  deleteAccountName: null,
-  apiKey: '',
-  binId: '',
-  connected: false,
-  syncing: false,
+  tasks: [], accounts: [],
+  statusFilter: 'active', viewFilter: 'board',
+  editId: null, deleteAccountName: null,
+  apiKey: '', binId: '', connected: false,
+  acHighlight: -1,
 };
 
 // ─── LOCAL STORAGE ────────────────────────────────────────────────────────────
 function lsGet(k, fb) { try { const r = localStorage.getItem(k); return r !== null ? JSON.parse(r) : fb; } catch { return fb; } }
 function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
-
 function loadLocal() {
   state.tasks    = lsGet('act2-tasks', []);
   state.accounts = lsGet('act2-accounts', DEFAULT_ACCOUNTS);
@@ -400,127 +382,211 @@ function loadLocal() {
   state.binId    = lsGet('act2-binId', '');
   state.connected = !!(state.apiKey && state.binId);
 }
+function saveLocal() { lsSet('act2-tasks', state.tasks); lsSet('act2-accounts', state.accounts); }
 
-function saveLocal() {
-  lsSet('act2-tasks', state.tasks);
-  lsSet('act2-accounts', state.accounts);
-}
-
-// ─── JSONBIN API ──────────────────────────────────────────────────────────────
+// ─── JSONBIN ──────────────────────────────────────────────────────────────────
 const JSONBIN_BASE = 'https://api.jsonbin.io/v3';
-
 async function binCreate(data) {
-  const res = await fetch(`${JSONBIN_BASE}/b`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Master-Key': state.apiKey, 'X-Bin-Name': 'Account Tasks', 'X-Private': 'true' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) { const t = await res.text(); throw new Error(`Create failed (${res.status}): ${t}`); }
+  const res = await fetch(`${JSONBIN_BASE}/b`, { method:'POST', headers:{'Content-Type':'application/json','X-Master-Key':state.apiKey,'X-Bin-Name':'Account Tasks','X-Private':'true'}, body:JSON.stringify(data) });
+  if (!res.ok) { const t=await res.text(); throw new Error(`Create failed (${res.status}): ${t}`); }
   return res.json();
 }
-
 async function binRead() {
-  const res = await fetch(`${JSONBIN_BASE}/b/${state.binId}/latest`, {
-    headers: { 'X-Master-Key': state.apiKey }
-  });
+  const res = await fetch(`${JSONBIN_BASE}/b/${state.binId}/latest`, { headers:{'X-Master-Key':state.apiKey} });
   if (!res.ok) throw new Error(`Read failed (${res.status})`);
-  const j = await res.json();
-  return j.record;
+  return (await res.json()).record;
 }
-
 async function binWrite(data) {
-  const res = await fetch(`${JSONBIN_BASE}/b/${state.binId}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json', 'X-Master-Key': state.apiKey },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) { const t = await res.text(); throw new Error(`Write failed (${res.status}): ${t}`); }
+  const res = await fetch(`${JSONBIN_BASE}/b/${state.binId}`, { method:'PUT', headers:{'Content-Type':'application/json','X-Master-Key':state.apiKey}, body:JSON.stringify(data) });
+  if (!res.ok) { const t=await res.text(); throw new Error(`Write failed (${res.status}): ${t}`); }
   return res.json();
 }
-
-function dataPayload() {
-  return { tasks: state.tasks, accounts: state.accounts };
-}
+function dataPayload() { return { tasks: state.tasks, accounts: state.accounts }; }
 
 async function syncDown() {
   if (!state.connected) return;
   showSyncing(true);
   try {
-    const record = await binRead();
-    if (record && record.tasks) state.tasks = record.tasks;
-    if (record && record.accounts && record.accounts.length) state.accounts = record.accounts;
-    saveLocal();
-    render();
-  } catch(e) {
-    toast('Sync failed: ' + e.message);
-  } finally {
-    showSyncing(false);
-  }
+    const rec = await binRead();
+    if (rec && rec.tasks) state.tasks = rec.tasks;
+    if (rec && rec.accounts && rec.accounts.length) state.accounts = rec.accounts;
+    saveLocal(); render();
+  } catch(e) { toast('Sync failed: ' + e.message); }
+  finally { showSyncing(false); }
 }
-
 async function syncUp() {
   if (!state.connected) return;
   showSyncing(true);
-  try {
-    await binWrite(dataPayload());
-  } catch(e) {
-    toast('Save failed: ' + e.message);
-  } finally {
-    showSyncing(false);
-  }
+  try { await binWrite(dataPayload()); }
+  catch(e) { toast('Save failed: ' + e.message); }
+  finally { showSyncing(false); }
 }
-
-function showSyncing(on) {
-  document.getElementById('syncBar').style.display = on ? 'flex' : 'none';
-}
-
+function showSyncing(on) { document.getElementById('syncBar').style.display = on ? 'flex' : 'none'; }
 function updateConnectedIndicator() {
   const bar = document.getElementById('connectedBar');
-  const dot = document.getElementById('connDot');
-  const txt = document.getElementById('connText');
-  if (state.connected) {
-    bar.style.display = 'flex';
-    dot.className = 'sync-dot';
-    txt.textContent = 'Synced';
+  bar.style.display = state.connected ? 'flex' : 'none';
+}
+
+// ─── CONFETTI ─────────────────────────────────────────────────────────────────
+const confettiCanvas = document.getElementById('confettiCanvas');
+const ctx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+let confettiAnim = null;
+
+function resizeCanvas() {
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const CONFETTI_COLORS = ['#e5173f','#54b9b3','#4b112c','#f59e0b','#10b981','#3b82f6','#f97316'];
+
+function launchConfetti() {
+  resizeCanvas();
+  confettiParticles = [];
+  for (let i = 0; i < 80; i++) {
+    confettiParticles.push({
+      x: Math.random() * confettiCanvas.width,
+      y: -10 - Math.random() * 40,
+      w: 6 + Math.random() * 8,
+      h: 4 + Math.random() * 4,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.15,
+      vx: (Math.random() - 0.5) * 3,
+      vy: 2 + Math.random() * 4,
+      opacity: 1,
+      gravity: 0.08 + Math.random() * 0.05,
+    });
+  }
+  if (confettiAnim) cancelAnimationFrame(confettiAnim);
+  animateConfetti();
+}
+
+function animateConfetti() {
+  ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  let alive = false;
+  for (const p of confettiParticles) {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += p.gravity;
+    p.rot += p.rotSpeed;
+    if (p.y < confettiCanvas.height + 20) {
+      p.opacity = Math.max(0, 1 - (p.y / confettiCanvas.height) * 1.2);
+      alive = true;
+    } else {
+      p.opacity = 0;
+    }
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.globalAlpha = p.opacity;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.w / 2, p.h / 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+  if (alive) {
+    confettiAnim = requestAnimationFrame(animateConfetti);
   } else {
-    bar.style.display = 'none';
+    ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
   }
 }
 
 // ─── UTILS ────────────────────────────────────────────────────────────────────
 function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
-
 function fmtDate(iso) {
   if (!iso) return '';
   const d = new Date(iso + 'T00:00:00');
-  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
 }
-
-function isOverdue(due) {
-  if (!due) return false;
-  return new Date(due + 'T00:00:00') < new Date(new Date().toDateString());
-}
-
+function isOverdue(due) { return due ? new Date(due+'T00:00:00') < new Date(new Date().toDateString()) : false; }
 function isDueSoon(due) {
   if (!due) return false;
-  const diff = new Date(due + 'T00:00:00') - new Date();
-  return diff >= 0 && diff < 3 * 86400000;
+  const diff = new Date(due+'T00:00:00') - new Date();
+  return diff >= 0 && diff < 3*86400000;
 }
-
 function priClass(p) { return p==='High'?'p-high':p==='Low'?'p-low':'p-medium'; }
 function priLabel(p) { return p==='High'?'HIGH':p==='Low'?'LOW':'MED'; }
-
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function toast(msg, dur=3500) {
   const el = document.getElementById('toastEl');
-  el.textContent = msg;
-  el.style.display = 'block';
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.style.display='none', dur);
+  el.textContent = msg; el.style.display = 'block';
+  clearTimeout(el._t); el._t = setTimeout(() => el.style.display='none', dur);
 }
+
+// ─── AUTOCOMPLETE ─────────────────────────────────────────────────────────────
+let acSelectedAccount = '';
+
+function onAccountInput() {
+  const val = document.getElementById('fAccount').value;
+  const query = val.toLowerCase().trim();
+  const sorted = [...state.accounts].sort();
+  const matches = query === '' ? sorted : sorted.filter(a => a.toLowerCase().includes(query));
+  state.acHighlight = -1;
+  renderAutocomplete(matches, query);
+}
+
+function renderAutocomplete(matches, query) {
+  const dd = document.getElementById('accountDropdown');
+  if (!matches.length) { dd.style.display = 'none'; return; }
+  dd.innerHTML = matches.map((a, i) => {
+    let label = esc(a);
+    if (query) {
+      const idx = a.toLowerCase().indexOf(query);
+      if (idx !== -1) {
+        label = esc(a.slice(0,idx)) + '<mark>' + esc(a.slice(idx, idx+query.length)) + '</mark>' + esc(a.slice(idx+query.length));
+      }
+    }
+    return `<div class="autocomplete-item" data-val="${esc(a)}" onmousedown="selectAccount('${esc(a)}')">${label}</div>`;
+  }).join('');
+  dd.style.display = 'block';
+}
+
+function selectAccount(name) {
+  document.getElementById('fAccount').value = name;
+  acSelectedAccount = name;
+  document.getElementById('accountDropdown').style.display = 'none';
+  document.getElementById('fTitle').focus();
+}
+
+function onAccountKeydown(e) {
+  const dd = document.getElementById('accountDropdown');
+  const items = dd.querySelectorAll('.autocomplete-item');
+  if (!items.length || dd.style.display === 'none') return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    state.acHighlight = Math.min(state.acHighlight + 1, items.length - 1);
+    updateAcHighlight(items);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    state.acHighlight = Math.max(state.acHighlight - 1, 0);
+    updateAcHighlight(items);
+  } else if (e.key === 'Enter' || e.key === 'Tab') {
+    if (state.acHighlight >= 0 && items[state.acHighlight]) {
+      e.preventDefault();
+      selectAccount(items[state.acHighlight].dataset.val);
+    } else if (items.length === 1) {
+      e.preventDefault();
+      selectAccount(items[0].dataset.val);
+    }
+  } else if (e.key === 'Escape') {
+    dd.style.display = 'none';
+  }
+}
+
+function updateAcHighlight(items) {
+  items.forEach((el, i) => el.classList.toggle('highlighted', i === state.acHighlight));
+  if (state.acHighlight >= 0) items[state.acHighlight].scrollIntoView({ block: 'nearest' });
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.autocomplete-wrap')) {
+    document.getElementById('accountDropdown').style.display = 'none';
+  }
+});
 
 // ─── FILTERS ──────────────────────────────────────────────────────────────────
 function setStatusFilter(val, btn) {
@@ -529,14 +595,12 @@ function setStatusFilter(val, btn) {
   btn.classList.add('active');
   render();
 }
-
 function setViewFilter(val, btn) {
   state.viewFilter = val;
   document.querySelectorAll('#viewGroup button').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
-
 function getFiltered() {
   const search = document.getElementById('searchInput').value.toLowerCase();
   const acc = document.getElementById('filterAccount').value;
@@ -557,12 +621,10 @@ function render() {
   renderAccountFilter();
   const filtered = getFiltered();
   const el = document.getElementById('mainContent');
-
   if (!filtered.length) {
     el.innerHTML = `<div class="empty"><div class="empty-icon">📋</div><div class="empty-title">No tasks found</div><div class="empty-sub">${state.accounts.length===0?'Add an account via Manage Accounts first':'Click + New Task to get started'}</div></div>`;
     return;
   }
-
   if (state.viewFilter === 'board') {
     const accs = [...new Set(filtered.map(t => t.account))].sort();
     el.innerHTML = `<div class="board">${accs.map(a => {
@@ -598,9 +660,9 @@ function cardHTML(t) {
   const ov = isOverdue(t.dueDate) && !t.done;
   const soon = isDueSoon(t.dueDate) && !t.done;
   const dc = ov?'overdue':t.done?'done':'';
-  return `<div class="task-card ${dc}">
+  return `<div class="task-card ${dc}" id="card-${t.id}">
     <div class="task-card-inner">
-      <input type="checkbox" ${t.done?'checked':''} onchange="toggleDone('${t.id}')">
+      <input type="checkbox" ${t.done?'checked':''} onchange="toggleDone('${t.id}',this)">
       <div class="task-card-body">
         <div class="task-title${t.done?' done':''}">${esc(t.title)}</div>
         ${t.notes?`<div class="task-notes">${esc(t.notes)}</div>`:''}
@@ -621,8 +683,8 @@ function rowHTML(t) {
   const ov = isOverdue(t.dueDate) && !t.done;
   const soon = isDueSoon(t.dueDate) && !t.done;
   const dc = ov?'overdue':t.done?'done':'';
-  return `<div class="task-row ${dc}">
-    <input type="checkbox" ${t.done?'checked':''} onchange="toggleDone('${t.id}')">
+  return `<div class="task-row ${dc}" id="row-${t.id}">
+    <input type="checkbox" ${t.done?'checked':''} onchange="toggleDone('${t.id}',this)">
     <div class="task-row-account"><span class="badge-account" title="${esc(t.account)}">${esc(t.account)}</span></div>
     <div class="task-row-title">
       <div class="task-title${t.done?' done':''}">${esc(t.title)}</div>
@@ -642,16 +704,18 @@ function rowHTML(t) {
 // ─── TASK ACTIONS ─────────────────────────────────────────────────────────────
 function openNewTask() {
   state.editId = null;
+  acSelectedAccount = '';
   document.getElementById('taskModalTitle').textContent = 'New Task';
   document.getElementById('taskSubmitBtn').textContent = 'Add Task';
   const acc = document.getElementById('filterAccount').value;
-  populateAccountDropdown(acc !== 'All' ? acc : '');
+  document.getElementById('fAccount').value = acc !== 'All' ? acc : '';
   document.getElementById('fTitle').value = '';
   document.getElementById('fPriority').value = 'Medium';
   document.getElementById('fDue').value = '';
   document.getElementById('fNotes').value = '';
+  document.getElementById('accountDropdown').style.display = 'none';
   document.getElementById('taskModal').style.display = 'flex';
-  setTimeout(() => document.getElementById('fTitle').focus(), 50);
+  setTimeout(() => document.getElementById('fAccount').focus(), 50);
 }
 
 function openEditTask(id) {
@@ -660,31 +724,29 @@ function openEditTask(id) {
   state.editId = id;
   document.getElementById('taskModalTitle').textContent = 'Edit Task';
   document.getElementById('taskSubmitBtn').textContent = 'Save Changes';
-  populateAccountDropdown(t.account);
+  document.getElementById('fAccount').value = t.account;
+  acSelectedAccount = t.account;
   document.getElementById('fTitle').value = t.title;
   document.getElementById('fPriority').value = t.priority;
   document.getElementById('fDue').value = t.dueDate || '';
   document.getElementById('fNotes').value = t.notes || '';
+  document.getElementById('accountDropdown').style.display = 'none';
   document.getElementById('taskModal').style.display = 'flex';
   setTimeout(() => document.getElementById('fTitle').focus(), 50);
 }
 
-function populateAccountDropdown(selected) {
-  const sel = document.getElementById('fAccount');
-  const sorted = [...state.accounts].sort();
-  sel.innerHTML = sorted.map(a => `<option${a===selected?' selected':''}>${esc(a)}</option>`).join('');
-}
-
 function closeTaskModal() {
   document.getElementById('taskModal').style.display = 'none';
+  document.getElementById('accountDropdown').style.display = 'none';
 }
 
 async function submitTask() {
   const title = document.getElementById('fTitle').value.trim();
+  const accountVal = document.getElementById('fAccount').value.trim();
   if (!title) { document.getElementById('fTitle').focus(); return; }
+  if (!accountVal) { document.getElementById('fAccount').focus(); return; }
   const task = {
-    account: document.getElementById('fAccount').value,
-    title,
+    account: accountVal, title,
     priority: document.getElementById('fPriority').value,
     dueDate: document.getElementById('fDue').value,
     notes: document.getElementById('fNotes').value.trim(),
@@ -704,19 +766,33 @@ async function submitTask() {
   await syncUp();
 }
 
-async function toggleDone(id) {
+async function toggleDone(id, checkbox) {
   const t = state.tasks.find(x => x.id === id);
-  if (t) t.done = !t.done;
-  saveLocal();
-  render();
+  if (!t) return;
+  const completing = !t.done;
+  t.done = completing;
+
+  if (completing) {
+    // Animate the card/row before re-rendering
+    const cardEl = document.getElementById('card-' + id) || document.getElementById('row-' + id);
+    if (cardEl) {
+      cardEl.classList.add('completing');
+      setTimeout(() => {
+        saveLocal(); render();
+        launchConfetti();
+      }, 350);
+    } else {
+      saveLocal(); render(); launchConfetti();
+    }
+  } else {
+    saveLocal(); render();
+  }
   await syncUp();
 }
 
 async function deleteTask(id) {
   state.tasks = state.tasks.filter(t => t.id !== id);
-  saveLocal();
-  render();
-  await syncUp();
+  saveLocal(); render(); await syncUp();
 }
 
 // ─── ACCOUNT ACTIONS ──────────────────────────────────────────────────────────
@@ -731,10 +807,7 @@ function openManageAccounts() {
 function renderAccountsList() {
   const sorted = [...state.accounts].sort();
   const el = document.getElementById('accountsList');
-  if (!sorted.length) {
-    el.innerHTML = '<div style="padding:24px;text-align:center;color:#bbb;font-size:13px">No accounts yet.</div>';
-    return;
-  }
+  if (!sorted.length) { el.innerHTML = '<div style="padding:24px;text-align:center;color:#bbb;font-size:13px">No accounts yet.</div>'; return; }
   el.innerHTML = sorted.map(name => {
     const count = state.tasks.filter(t => t.account === name).length;
     return `<div class="account-item">
@@ -751,20 +824,17 @@ async function addAccount() {
   if (state.accounts.map(a=>a.toLowerCase()).includes(name.toLowerCase())) { toast('Account already exists'); return; }
   state.accounts.push(name);
   document.getElementById('newAccountInput').value = '';
-  saveLocal();
-  renderAccountsList();
+  saveLocal(); renderAccountsList();
   document.getElementById('accountsModalTitle').textContent = `Manage Accounts (${state.accounts.length})`;
-  render();
-  await syncUp();
+  render(); await syncUp();
 }
 
 function removeAccount(name) {
   state.deleteAccountName = name;
   const count = state.tasks.filter(t => t.account === name).length;
-  document.getElementById('deleteAccountMsg').innerHTML =
-    count > 0
-      ? `<strong>${esc(name)}</strong> has ${count} task${count!==1?'s':''} assigned to it.`
-      : `Are you sure you want to remove <strong>${esc(name)}</strong>?`;
+  document.getElementById('deleteAccountMsg').innerHTML = count > 0
+    ? `<strong>${esc(name)}</strong> has ${count} task${count!==1?'s':''} assigned to it.`
+    : `Are you sure you want to remove <strong>${esc(name)}</strong>?`;
   document.getElementById('deleteAccountModal').style.display = 'flex';
 }
 
@@ -772,15 +842,11 @@ async function confirmDeleteAccount() {
   const name = state.deleteAccountName;
   state.accounts = state.accounts.filter(a => a !== name);
   state.tasks = state.tasks.filter(t => t.account !== name);
-  if (document.getElementById('filterAccount').value === name) {
-    document.getElementById('filterAccount').value = 'All';
-  }
+  if (document.getElementById('filterAccount').value === name) document.getElementById('filterAccount').value = 'All';
   document.getElementById('deleteAccountModal').style.display = 'none';
   renderAccountsList();
   document.getElementById('accountsModalTitle').textContent = `Manage Accounts (${state.accounts.length})`;
-  saveLocal();
-  render();
-  await syncUp();
+  saveLocal(); render(); await syncUp();
 }
 
 // ─── SETUP ────────────────────────────────────────────────────────────────────
@@ -797,12 +863,10 @@ function updateSetupStatus() {
   const dot = document.getElementById('setupDot');
   const txt = document.getElementById('setupStatusText');
   if (state.connected) {
-    bar.className = 'setup-status connected';
-    dot.className = 'setup-dot green';
+    bar.className = 'setup-status connected'; dot.className = 'setup-dot green';
     txt.textContent = 'Connected to JSONBin — syncing across devices';
   } else {
-    bar.className = 'setup-status disconnected';
-    dot.className = 'setup-dot red';
+    bar.className = 'setup-status disconnected'; dot.className = 'setup-dot red';
     txt.textContent = 'Not connected — tasks stored locally only';
   }
 }
@@ -818,59 +882,39 @@ async function testConnection() {
   if (!apiKey) { setConfigMsg('Enter your API key first.', false); return; }
   document.getElementById('testBtn').textContent = 'Testing...';
   try {
-    const res = await fetch(`${JSONBIN_BASE}/b?raw=true`, { headers: { 'X-Master-Key': apiKey } });
-    if (res.status === 200 || res.status === 404) {
-      setConfigMsg('API key is valid. Click Connect & Sync to continue.', true);
-    } else {
-      throw new Error(`HTTP ${res.status} — check your key`);
-    }
-  } catch(e) {
-    setConfigMsg('Test failed: ' + e.message, false);
-  } finally {
-    document.getElementById('testBtn').textContent = 'Test Key';
-  }
+    const res = await fetch(`${JSONBIN_BASE}/b?raw=true`, { headers:{'X-Master-Key':apiKey} });
+    if (res.status === 200 || res.status === 404) setConfigMsg('API key is valid. Click Connect & Sync to continue.', true);
+    else throw new Error(`HTTP ${res.status}`);
+  } catch(e) { setConfigMsg('Test failed: ' + e.message, false); }
+  finally { document.getElementById('testBtn').textContent = 'Test Key'; }
 }
 
 async function saveConfig() {
   const apiKey = document.getElementById('cfgApiKey').value.trim();
   const binId  = document.getElementById('cfgBinId').value.trim();
   if (!apiKey) { setConfigMsg('Please enter your API key.', false); return; }
-
   document.getElementById('connectBtn').textContent = 'Connecting...';
   document.getElementById('connectBtn').disabled = true;
-  setConfigMsg('', true);
-
   state.apiKey = apiKey;
   lsSet('act2-apiKey', apiKey);
-
   try {
     if (binId) {
-      // Use existing bin — pull data down
-      state.binId = binId;
-      lsSet('act2-binId', binId);
-      state.connected = true;
-      const record = await binRead();
-      if (record && record.tasks) state.tasks = record.tasks;
-      if (record && record.accounts && record.accounts.length) state.accounts = record.accounts;
-      saveLocal();
-      setConfigMsg('Connected! Data loaded from your bin.', true);
+      state.binId = binId; lsSet('act2-binId', binId); state.connected = true;
+      const rec = await binRead();
+      if (rec && rec.tasks) state.tasks = rec.tasks;
+      if (rec && rec.accounts && rec.accounts.length) state.accounts = rec.accounts;
+      saveLocal(); setConfigMsg('Connected! Data loaded from your bin.', true);
     } else {
-      // Create a new bin with current local data
       const result = await binCreate(dataPayload());
       state.binId = result.metadata.id;
-      lsSet('act2-binId', state.binId);
-      state.connected = true;
+      lsSet('act2-binId', state.binId); state.connected = true;
       document.getElementById('cfgBinId').value = state.binId;
       setConfigMsg(`Connected! Bin created: ${state.binId}`, true);
     }
-    updateSetupStatus();
-    updateConnectedIndicator();
-    render();
-    toast('Connected to JSONBin');
+    updateSetupStatus(); updateConnectedIndicator(); render(); toast('Connected to JSONBin');
   } catch(e) {
     setConfigMsg('Connection failed: ' + e.message, false);
-    state.connected = false;
-    state.binId = '';
+    state.connected = false; state.binId = '';
   } finally {
     document.getElementById('connectBtn').textContent = 'Connect & Sync';
     document.getElementById('connectBtn').disabled = false;
@@ -879,24 +923,22 @@ async function saveConfig() {
 
 function clearConfig() {
   if (!confirm('Disconnect from JSONBin? Your local tasks will be kept.')) return;
-  state.apiKey = '';
-  state.binId = '';
-  state.connected = false;
-  lsSet('act2-apiKey', '');
-  lsSet('act2-binId', '');
+  state.apiKey = ''; state.binId = ''; state.connected = false;
+  lsSet('act2-apiKey',''); lsSet('act2-binId','');
   document.getElementById('cfgApiKey').value = '';
   document.getElementById('cfgBinId').value = '';
-  updateSetupStatus();
-  updateConnectedIndicator();
-  setConfigMsg('', false);
-  toast('Disconnected');
+  updateSetupStatus(); updateConnectedIndicator();
+  setConfigMsg('', false); toast('Disconnected');
 }
 
 // ─── KEYBOARD ─────────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none');
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay').forEach(m => m.style.display='none');
+    document.getElementById('accountDropdown').style.display = 'none';
+  }
   if (e.key === 'Enter' && document.getElementById('taskModal').style.display !== 'none') {
-    if (document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'SELECT') submitTask();
+    if (document.activeElement.id === 'fTitle') submitTask();
   }
 });
 
